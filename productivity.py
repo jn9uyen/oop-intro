@@ -1,5 +1,6 @@
+class _ProductivitySystem:
+    '''Singleton'''
 
-class ProductivitySystem:
     def __init__(self):
         self._roles = {
             'manager': ManagerRole,
@@ -15,7 +16,7 @@ class ProductivitySystem:
         return role_type()
 
     def track(self, employees, hours):
-        print('Tracking Employee Productivity')
+        print('\nTracking Employee Productivity')
         print('==============================')
         for employee in employees:
             employee.work(hours)
@@ -40,3 +41,14 @@ class SalesRole:
 class FactoryRole:
     def perform_duties(self, hours):
         return f'manufactures gadgets for {hours} hours.'
+
+
+_productivity_system = _ProductivitySystem()
+
+
+def get_role(role_id):
+    return _productivity_system.get_role(role_id)
+
+
+def track(employees, hours):
+    return _productivity_system.track(employees, hours)

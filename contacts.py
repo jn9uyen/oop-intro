@@ -1,5 +1,3 @@
-
-
 class Address:
     def __init__(self, street, city, state, zipcode, street2=''):
         self.street = street
@@ -16,7 +14,7 @@ class Address:
         return '\n'.join(lines)
 
 
-class AddressBook:
+class _AddressBook:
     def __init__(self):
         self._employee_addresses = {
             1: Address('121 Admin Rd.', 'Concord', 'NH', '03301'),
@@ -31,3 +29,10 @@ class AddressBook:
         if not address:
             raise ValueError(employee_id)
         return address
+
+
+address_book = _AddressBook()
+
+
+def get_employee_address(employee_id):
+    return address_book.get_employee_address(employee_id)

@@ -1,13 +1,4 @@
-
-class MyClass:
-    pass
-
-
-class MyError(Exception):
-    pass
-
-
-class PayrollSystem:
+class _PayrollSystem:
     '''Implements a `calculate_payroll()` method (interface) common to every
     employee class
     The `IPayrollCalculator` interface requires each employee object passed
@@ -29,8 +20,8 @@ class PayrollSystem:
             return ValueError(employee_id)
         return policy
 
-    def calculate_payroll(self, employees):
-        print('Calculating Payroll')
+    def calculate_payroll2(self, employees):
+        print('\nCalculating Payroll')
         print('===================')
         for employee in employees:
             print(f'Payroll for: {employee.id} - {employee.name}')
@@ -80,3 +71,40 @@ class CommissionPolicy(SalaryPolicy):
     def calculate_payroll(self):
         fixed = super().calculate_payroll()
         return fixed + self.commission
+
+
+class LTDPolicy:
+    '''LTDPolicy doesn’t inherit PayrollPolicy, but implements the same
+    interface. This is because the implementation is completely different,
+    so we don’t want to inherit any of the PayrollPolicy implementation.
+    '''
+
+    def __init__(self):
+        self._base_policy = None
+
+    def apply_to_policy(self, base_policy):
+        self._base_policy = base_policy
+
+    def _check_base_policy(self):
+        if not self._base_policy:
+            raise RuntimeError('Base policy missing')
+
+    def track_work(self, hours):
+        self._check_base_policy()
+        return self._base_policy.track_work(hours)
+
+    def calculate_payroll(self):
+        self._check_base_policy()
+        base_salary = self._base_policy.calculate_payroll()
+        return base_salary * 0.6
+
+
+_payroll_system = _PayrollSystem()
+
+
+def get_policy(employee_id):
+    return _payroll_system.get_policy(employee_id)
+
+
+def calculate_payroll2(employees):
+    return _payroll_system.calculate_payroll2(employees)
